@@ -10,14 +10,13 @@ from input import create_cropped_images, get_train_samples, vid2img, verify_img_
 # From file settings
 settings = ConfigParser()
 settings.read("settings.ini")
-img_base_path = settings.get('Training','img_base_path')
-video_path = settings.get('Training','video_path')
-video_label = settings.get('Training','video_label')
-class_model_name = settings.get('Training','class_model_name')
+img_base_path = settings.get('Preperation','img_base_path')
+video_path = settings.get('Preperation','video_path')
+video_label = settings.get('Preperation','video_label')
 
 # Take arugments and parse them
 parser = ArgumentParser(description="Creating a training dataset")
-parser.add_argument("--input", choices = ["webcam", "image_folder", "video"], help="Input path for training", required = True) # not implemented
+parser.add_argument("-input", choices = ["webcam", "image_folder", "video"], help="Input path for training", required = True)
 args = parser.parse_args()
 in_type = args.input
 
