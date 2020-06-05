@@ -40,6 +40,7 @@ Run:
 Select the classifier in settings.ini
 the options are: ["svm","logisticregression","bayes"], recommended to stay with the default SVM.
 Run:
+
 `python train.py`
 
 <h3>Run inference</h3>
