@@ -17,15 +17,16 @@ def face_extractor(device, margin = 10):
 	return mtcnn
 
 def get_model(model, kernel=None):
-	if model == 'svm':
-		from sklearn import svm
-		clf = svm.SVC(probability=True, decision_function_shape='ovr')
-	elif model == 'ridge':
-		from sklearn.linear_model import Ridge
-		clf = Ridge(alpha=1.0)	
-	elif model.lower() =='logisticregression':
+	if 'svm' in model:
+		from sklearn import svm # Pretty good, sometimes is wrong
+		clf = svm.SVC(kernel = 'rbf', probability=True,\
+		gamma = 0.00055, C = 0.01, decision_function_shape='ovr')
+	elif model.lower() =='logisticregression':  # Too wrong
 		from sklearn.linear_model import LogisticRegression
 		clf = LogisticRegression(random_state=0, multi_class='ovr')
+	elif model.lower() == 'bayes':
+		from sklearn.naive_bayes import BernoulliNB # Almost always returns probabilities 0 or 1
+		clf = BernoulliNB()
 
 	return clf
 
