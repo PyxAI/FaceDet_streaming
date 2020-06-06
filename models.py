@@ -16,7 +16,7 @@ def get_model(model, kernel=None):
 	if 'svm' in model:
 		from sklearn import svm # Pretty good, sometimes is wrong
 		clf = svm.SVC(kernel = 'linear', probability=True,\
-		gamma = 0.00001, C = 0.001) #decision_function_shape='ovr')
+		gamma = 0.0001, C = 1) #decision_function_shape='ovr')
 	elif model.lower() =='logisticregression':  # Too wrong
 		from sklearn.linear_model import LogisticRegression
 		clf = LogisticRegression(random_state=0, multi_class='ovr')
