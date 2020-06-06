@@ -1,6 +1,3 @@
-#models
-
-#set parameters from settings file
 
 def get_resnet(device, classify = True):
 	from facenet_pytorch import InceptionResnetV1
@@ -8,19 +5,18 @@ def get_resnet(device, classify = True):
 	resnet.classify = classify
 	return resnet
 
-
-def face_extractor(device, margin = 10):
+def face_extractor(device, margin = 15, scale_factor = 0.709):
 	from facenet_pytorch import MTCNN
 	mtcnn = MTCNN(\
 	image_size=160, margin=margin, min_face_size=20,\
-	thresholds=[0.7, 0.8, 0.8], factor=0.709, post_process=True,device=device)
+	thresholds=[0.7, 0.8, 0.8], factor=scale_factor, post_process=True,device=device)
 	return mtcnn
 
 def get_model(model, kernel=None):
 	if 'svm' in model:
 		from sklearn import svm # Pretty good, sometimes is wrong
-		clf = svm.SVC(kernel = 'rbf', probability=True,\
-		gamma = 0.00055, C = 0.01, decision_function_shape='ovr')
+		clf = svm.SVC(kernel = 'linear', probability=True,\
+		gamma = 0.00001, C = 0.001) #decision_function_shape='ovr')
 	elif model.lower() =='logisticregression':  # Too wrong
 		from sklearn.linear_model import LogisticRegression
 		clf = LogisticRegression(random_state=0, multi_class='ovr')
@@ -37,7 +33,4 @@ def get_norm(norm_type = 'l2'):
 def get_encoder():
 	from sklearn.preprocessing import LabelEncoder
 	return LabelEncoder()
-
-
-
 

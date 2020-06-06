@@ -11,7 +11,7 @@ from joblib import load
 import pickle
 from configparser import ConfigParser
 from argparse import ArgumentParser
-
+from PIL import Image
 
 # From settings file
 settings = ConfigParser()
@@ -75,38 +75,40 @@ while(True):
 	bbox_list, probs = mtcnn.detect(frame)
 	if bbox_list is not None:
 		for bbox in bbox_list:
+			# Extracting the face from bboxes to save time
 			bbox = [int(x) for x in bbox]
 			x1, y1, x2, y2 = (bbox[i] for i in range(4))
-			crop = frame[x1:x2,y1:y2,:]
-			crop = np.moveaxis(crop, -1, 0)
+			crop = frame[y1:y2,x1:x2,:]
+			try:
+				crop = Image.fromarray(crop).resize((160,160))
+			except ValueError as err:
+				continue
+			crop = np.array(crop)
+			crop = np.moveaxis(crop, -1, 0)	
+			mean, std = crop.mean(), crop.std()
+			crop = (crop - mean) / std	
 			crop = torch.Tensor(crop)
-
-			# Get draw bboxes on and draw them
-			
-			# To verify we got a bbox, (comes as an array, or None) we run throught two "if"s
-			if isinstance(probs,np.ndarray):
-				if probs.any():
-					start_point = (x1, y1)
-					end_point = (x2, y2)
-					print (start_point, end_point)
-					frame = cv2.rectangle(frame, start_point, end_point, (255,0,0), 2) 
-
-			# Get faceID only if we have a crop
+			# Drawing bboxes.
+			start_point = (x1, y1)
+			end_point = (x2, y2)
+			# Get face embeddings
 			embeddings = resnet(crop.unsqueeze(0)).detach().numpy()
-			embeddings = (embeddings- embeddings.mean()) / embeddings.std()
 			# Predict!
+			embeddings = norm.transform(embeddings)
+
 			prob = clf.predict_proba(embeddings)
 			pred = np.argmax(prob)
-			face = convert_labels.inverse_transform([pred])[0] + "\nprobability: {:.4f}".format(prob[0][pred])
-			print("pred = {}, prob = {}".format(pred,prob))
+			face_text = convert_labels.inverse_transform([pred])[0] + " {:.3f}%".format(prob[0][pred]*100)
+			print (prob)
+			pred = clf.predict(embeddings)
+			print ("predict got {} as face".format(convert_labels.inverse_transform([pred])[0]))
 			# Draw text
 			bottomLeftCornerOfText = (int(start_point[0]),int(start_point[1])-10)
-			frame = cv2.putText(frame, face+': ', bottomLeftCornerOfText, font, fontScale, color=fontColor, lineType=lineType)
-			
+			frame = cv2.putText(frame, face_text, bottomLeftCornerOfText, font, fontScale, color=fontColor, lineType=lineType)	
+			frame = cv2.rectangle(frame, start_point, end_point, (255,0,0), 2)
 			# For debugging
 			#display(Image.open(base+'who_crop.jpg'))
-			print(face)
-
+			print(face_text)
 	frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 	cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -3,6 +3,7 @@ from PIL import Image
 from models import face_extractor, get_resnet
 import numpy as np
 import time
+import torch
 
 def getEmbedings(aligned, names, resnet):
 	embbedX = list()

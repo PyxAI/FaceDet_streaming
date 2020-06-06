@@ -6,7 +6,6 @@ from utils import getEmbedings
 from input import get_train_samples, vid2img, verify_img_folder
 import pickle
 from configparser import ConfigParser
-from argparse import ArgumentParser
 
 workers = 0 if os.name == 'nt' else 8
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -14,10 +13,10 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 # From file settings
 settings = ConfigParser()
 settings.read("settings.ini")
-img_base_path = settings.get('Training','img_base_path')
+img_base_path = settings.get('Preperation','img_base_path')
 class_model_name = settings.get('Training','class_model_name')
 
-# Get cropped faces
+# Get cropped images
 trainX, trainY = get_train_samples(img_base_path, device=device)
 
 resnet = get_resnet(device, classify = True)
