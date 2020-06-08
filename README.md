@@ -4,6 +4,8 @@ Train and detect faces live from IP cameras or input video
 Uses code adapted from facedet-pytorch repo:
 https://github.com/timesler/facenet-pytorch
 
+<img src = 'https://github.com/PyxAI/FaceDet_streaming/blob/master/ezgif.com-optimize.gif?raw=true'>
+
 Using <b>MTCNN</b> to locate faces in images
 and pretrained resnet to extract face embeddings.
 To speed things up, I am using the mtcnn's <i>detect</i> method to the returns only the bboxes, and then extract the faces from the original frame.
