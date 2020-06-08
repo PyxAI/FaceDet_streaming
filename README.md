@@ -1,8 +1,15 @@
-# FaceDet_streaming
+# FaceDet streaming
 Train and detect faces live from IP cameras or input video
 
 Uses code adapted from facedet-pytorch repo:
 https://github.com/timesler/facenet-pytorch
+
+Using <b>MTCNN</b> to locate faces in images
+and pretrained resnet to extract face embeddings.
+To speed things up, I am using the mtcnn's <i>detect</i> method to the returns only the bboxes, and then extract the faces from the original frame.
+You can add as many people as you'd like, by providing a video of that person (with no other people in the video as to not affect detection)
+You can also just add a folder with the images of the person to the data folder.
+In the future, adding a clustering algorythem to extract only the most seen person in a video can be added.
 
 
 installation:
