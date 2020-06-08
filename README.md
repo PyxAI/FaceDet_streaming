@@ -6,7 +6,7 @@ https://github.com/timesler/facenet-pytorch
 
 <img src = 'https://github.com/PyxAI/FaceDet_streaming/blob/master/ezgif.com-optimize.gif?raw=true'>
 
-Using <b>MTCNN</b> to locate faces in images, a pretrained resnet to extract face embeddings and a Linear SVC to classify the images.
+Using <b>MTCNN</b> to locate faces in images, a pretrained resnet to extract face embeddings and a Linear SVM to classify the images.
 
 To speed things up, I am using the mtcnn's <i>detect</i> method to the returns only the bboxes, and then extract the faces from the original frame.
 
