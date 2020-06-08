@@ -55,9 +55,10 @@ the options are: ["svm", "logisticregression", "bayes"], it's recommended to sta
 `python train.py`
 
 <h3>Run inference</h3>
-Arguments for detection:
-input: ["webcam", "ipcam"]
-If using IP cam, make sure to include the address of the RTSP stream with user:pass included (can see example in the script)
+Arguments for detection:<br>
+input: ["webcam", "ipcam"]<br>
+If using IP cam, make sure to include the address of the RTSP stream with user:pass included (can see example in the script)<br>
+Alternativly, insert username and password in the terminal, but provied the address of the stream in the settings file nonetheless.
 
 `python detect.py -input webcam`
 
