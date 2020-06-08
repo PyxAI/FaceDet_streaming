@@ -21,6 +21,8 @@ try:
 	frame_rate =int(settings.get('Detection','frame_rate'))
 except ValueError:
 	print ("Frame_rate in settings file cannot be converted to int")
+face_thresh = float(settings.get('Detection','face_thresh'))
+id_thresh = float(settings.get('Detection','id_thresh'))
 
 
 # From command line args
@@ -46,8 +48,8 @@ elif args.input == "video":
 	print ("Not implemented yet")
 
 
-font  = cv2.FONT_HERSHEY_SIMPLEX
-fontScale = 1
+font  = cv2.FONT_HERSHEY_DUPLEX
+fontScale = 1.5
 fontColor = (255,0,0)
 lineType = 2
 # TODO
@@ -74,7 +76,9 @@ while(True):
 	# Run through mtcnn to get a cropped face
 	bbox_list, probs = mtcnn.detect(frame)
 	if bbox_list is not None:
-		for bbox in bbox_list:
+		for bbox, prob in zip(bbox_list, probs):
+			if prob<face_thresh:
+				continue
 			# Extracting the face from bboxes to save time
 			bbox = [int(x) for x in bbox]
 			x1, y1, x2, y2 = (bbox[i] for i in range(4))
@@ -88,27 +92,24 @@ while(True):
 			mean, std = crop.mean(), crop.std()
 			crop = (crop - mean) / std	
 			crop = torch.Tensor(crop)
-			# Drawing bboxes.
-			start_point = (x1, y1)
-			end_point = (x2, y2)
 			# Get face embeddings
 			embeddings = resnet(crop.unsqueeze(0)).detach().numpy()
 			# Predict!
 			embeddings = norm.transform(embeddings)
-
 			prob = clf.predict_proba(embeddings)
 			pred = np.argmax(prob)
-			face_text = convert_labels.inverse_transform([pred])[0] + " {:.3f}%".format(prob[0][pred]*100)
-			print (prob)
+			if prob[0][pred]<id_thresh:
+				face_text = "Uncertain"
+			else:
+				face_text = convert_labels.inverse_transform([pred])[0] + " {:.3f}%".format(prob[0][pred]*100)
 			pred = clf.predict(embeddings)
-			print ("predict got {} as face".format(convert_labels.inverse_transform([pred])[0]))
 			# Draw text
+			start_point = (x1, y1)
+			end_point = (x2, y2)
 			bottomLeftCornerOfText = (int(start_point[0]),int(start_point[1])-10)
 			frame = cv2.putText(frame, face_text, bottomLeftCornerOfText, font, fontScale, color=fontColor, lineType=lineType)	
+			# Drawing bboxes.
 			frame = cv2.rectangle(frame, start_point, end_point, (255,0,0), 2)
-			# For debugging
-			#display(Image.open(base+'who_crop.jpg'))
-			print(face_text)
 	frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 	cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
