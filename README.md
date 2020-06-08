@@ -50,8 +50,7 @@ Run:
 
 <h3>Training</h3>
 Select the classifier in settings.ini
-the options are: ["svm","logisticregression","bayes"], recommended to stay with the default SVM.
-Run:
+the options are: ["svm", "logisticregression", "bayes"], it's recommended to stay with the default SVM.
 
 `python train.py`
 
