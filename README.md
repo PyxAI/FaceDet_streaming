@@ -5,6 +5,7 @@ Uses code adapted from facedet-pytorch repo:
 https://github.com/timesler/facenet-pytorch
 
 <img src = 'https://github.com/PyxAI/FaceDet_streaming/blob/master/ezgif.com-optimize.gif?raw=true'>
+This demo was done on a live feed from my webcam on i5 cpu only inference
 
 Using <b>MTCNN</b> to locate faces in images, a pretrained resnet to extract face embeddings and a Linear SVM to classify the images.
 
