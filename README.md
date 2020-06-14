@@ -4,8 +4,8 @@ Train and detect faces live from IP cameras or input video
 Uses code adapted from facedet-pytorch repo:
 https://github.com/timesler/facenet-pytorch
 
-<img src = 'https://github.com/PyxAI/FaceDet_streaming/blob/master/ezgif.com-optimize.gif?raw=true'>
-
+<i>The following demo was done on a live feed from my webcam on i5 cpu only inference</i><br>
+<img src = 'https://github.com/PyxAI/FaceDet_streaming/blob/master/ezgif.com-optimize.gif?raw=true'><br>
 Using <b>MTCNN</b> to locate faces in images, a pretrained resnet to extract face embeddings and a Linear SVM to classify the images.
 
 To speed things up, I am using the mtcnn's <i>detect</i> method to return only the bounding boxes, and then extract the faces from the original frame.
@@ -50,15 +50,15 @@ Run:
 
 <h3>Training</h3>
 Select the classifier in settings.ini
-the options are: ["svm","logisticregression","bayes"], recommended to stay with the default SVM.
-Run:
+the options are: ["svm", "logisticregression", "bayes"], it's recommended to stay with the default SVM.
 
 `python train.py`
 
 <h3>Run inference</h3>
-Arguments for detection:
-input: ["webcam", "ipcam"]
-If using IP cam, make sure to include the address of the RTSP stream with user:pass included (can see example in the script)
+Arguments for detection:<br>
+input: ["webcam", "ipcam"]<br>
+If using IP cam, make sure to include the address of the RTSP stream with user:pass included (can see example in the script)<br>
+Alternativly, insert username and password in the terminal, but provied the address of the stream in the settings file nonetheless.
 
 `python detect.py -input webcam`
 
