@@ -5,7 +5,7 @@ Uses code adapted from facedet-pytorch repo:
 https://github.com/timesler/facenet-pytorch
 
 <i>The following demo was done on a live feed from my webcam on i5 cpu only inference</i><br>
-<img src = 'https://github.com/PyxAI/FaceDet_streaming/blob/master/ezgif.com-optimize.gif?raw=true'>
+<img src = 'https://github.com/PyxAI/FaceDet_streaming/blob/master/ezgif.com-optimize.gif?raw=true'><br>
 Using <b>MTCNN</b> to locate faces in images, a pretrained resnet to extract face embeddings and a Linear SVM to classify the images.
 
 To speed things up, I am using the mtcnn's <i>detect</i> method to return only the bounding boxes, and then extract the faces from the original frame.
