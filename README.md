@@ -10,11 +10,11 @@ Using <b>MTCNN</b> to locate faces in images, a pretrained resnet to extract fac
 
 To speed things up, I am using the mtcnn's <i>detect</i> method to return only the bounding boxes, and then extract the faces from the original frame.
 
-To train, you can provide a video of a person (with no other people in the video as to not affect detection)
+To train, you can provide a video of a person (with no other people in the video as to not to affect detection)
 You can also just add a folder with the images of the person to the data folder.
 you can add as many people as you'd like.
 
-In the future, adding a clustering algorythem to extract only the most seen person in a video can be added.
+In the future, adding a clustering algorithm to extract only the most seen person in a video can be added.
 
 
 installation:
